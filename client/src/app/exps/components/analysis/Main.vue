@@ -42,6 +42,7 @@
             </tr>
           </tbody>
         </table>
+        <pagination :paginationData="pagination" :currentPage="currentPage" :maxItems="pagination.total"></pagination>
       </div>
     </div>
   </div>
@@ -64,7 +65,12 @@
       }
     },
     mounted () {
+      this.$bus.$on('navigate', ({ page }) => this.navigate(page))
       this.fetch()
+    },
+    beforeRouteLeave (to, from, next) {
+      this.$bus.$off('navigate')
+      next()
     },
     watch: {
       currentPage: 'fetch'
@@ -73,7 +79,7 @@
       ...mapActions(['analysesSetData', 'setFetching', 'setMessage']),
       fetch () {
         this.setFetching({ fetching: true })
-        this.$http.get('analyses').then(({ data }) => {
+        this.$http.get(`analyses?page=${this.currentPage}`).then(({ data }) => {
           console.log(data)
           this.analysesSetData({
             analyses: data.data,
@@ -83,7 +89,7 @@
         })
       },
       navigate (obj) {
-        this.$route.push({
+        this.$router.push({
           name: 'analyses.index',
           query: {
             page: obj.page

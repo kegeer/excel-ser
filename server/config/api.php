@@ -40,5 +40,7 @@ return [
         App\Models\Analysis::class => App\Transformers\AnalysisTransformer::class,
         App\Models\Distribution::class => App\Transformers\DistributionTransformer::class,
         App\Models\Library::class => App\Transformers\LibraryTransformer::class,
+        App\Models\Sequence::class => App\Transformers\SequenceTransformer::class,
+        App\Models\Pooling::class => App\Transformers\PoolingTransformer::class,
     ],
 ];

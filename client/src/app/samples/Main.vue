@@ -35,9 +35,10 @@
           </tr>
           </tbody>
         </table>
+        <pagination :paginationData="pagination" :currentPage="currentPage" :maxItems="pagination.total"></pagination>
       </div>
     </div>
-    <pagination :paginationData="pagination" :currentPage="currentPage" :maxItems="pagination.total"></pagination>
+
   </div>
 </template>
 <script>
@@ -57,7 +58,12 @@
       }
     },
     mounted () {
+      this.$bus.$on('navigate', ({ page }) => this.navigate(page))
       this.fetch()
+    },
+    beforeRouteLeave (to, from, next) {
+      this.$bus.$off('navigate')
+      next()
     },
     watch: {
       currentPage: 'fetch'
@@ -66,7 +72,7 @@
       ...mapActions(['samplesSetData', 'setFetching', 'setMessage']),
       fetch () {
         this.setFetching({ fetching: true })
-        this.$http.get('samples').then(({ data }) => {
+        this.$http.get(`samples?page=${this.currentPage}`).then(({ data }) => {
           console.log(data)
           this.samplesSetData({
             samples: data.data,
@@ -76,7 +82,7 @@
         })
       },
       navigate (obj) {
-        this.$route.push({
+        this.$router.push({
           name: 'samples.index',
           query: {
             page: obj.page

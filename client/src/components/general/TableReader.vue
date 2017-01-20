@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slot name="header"></slot>
+          <slot name="header"></slot>
     <form>
       <div class="panel panel-default">
         <div class="panel-body">
@@ -35,6 +35,8 @@
           <h4>请逐行选择和添加你要上传的数据<i class="fa fa-level-down"></i></h4>
         </div>
         <div class="panel-body">
+
+
           <span v-show="!sheetData.data">
             <p class="text-danger">该表格里面没有数据</p>
           </span>
@@ -73,10 +75,13 @@
         data: []
       }
     },
-    updated () {
-      console.log(this.selectedRow)
-    },
+    // updated () {
+    //   console.log(this.selectedRow)
+    // },
     methods: {
+      // showColumn (row) {
+      //   this.$bus.$emit('showNumColumn', row)
+      // },
       fileLoad (e) {
         this.excelFile = e.target.files[0]
       },
@@ -91,7 +96,7 @@
             this.isProcessing = false
           })
         }
-        console.log(this.sheets)
+        // console.log(this.sheets)
       },
       checkboxInput (index) {
         return 'checkbox' + index
@@ -99,11 +104,15 @@
       selectedSheet (sheetName) {
         this.sheetData = this.sheets[sheetName]
       },
+      sortNum (a, b) {
+        return a - b
+      },
       sendTable () {
         this.resetData()
+        this.selectedRow.sort(this.sortNum)
+        console.log(this.selectedRow)
         this.selectedRow.forEach(index => this.data.push(this.sheetData.data[index]))
         this.$bus.$emit('sendTableData', this.data)
-        console.log(this.data)
       },
       resetData () {
         this.data = []

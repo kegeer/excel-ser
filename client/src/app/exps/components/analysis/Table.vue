@@ -12,7 +12,7 @@
               <th rowspan="2">序号</th>
               <th rowspan="2">谱元编号</th>
               <th rowspan="2">扩增方案</th>
-              <th colspan="4">数据</th>
+              <th colspan="5">数据</th>
               <th rowspan="2">实验批次</th>
               <th rowspan="2">项目归属</th>
               <th rowspan="2">备注(意外情况</th>

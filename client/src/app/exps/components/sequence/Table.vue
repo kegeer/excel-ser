@@ -64,7 +64,7 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label for="sample_sheet">Sample Sheet</label>
-                    <input type="date" class="form-control" id="sample_sheet" v-model="form.sample_sheet">
+                    <input type="text" class="form-control" id="sample_sheet" v-model="form.sample_sheet">
                   </div>
                 </div>
               </div>
@@ -78,7 +78,7 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label for="run_c">上机浓度</label>
-                    <input type="date" class="form-control" id="run_c" v-model="form.run_c">
+                    <input type="text" class="form-control" id="run_c" v-model="form.run_c">
                   </div>
                 </div>
               </div>

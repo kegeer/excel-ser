@@ -40,14 +40,15 @@ class DistributionsController extends ApiController
         $dm = DistributionMeta::create($meta);
 
         $distributions = $request->get('data');
+        $data = array_flatten($distributions);
         $created = [];
-            if (!empty($distribution)) {
-                foreach ($distributions as $distribution) {
-                $data = [];
-                $data['meta_id'] = $dm->id;
-                $data['py_num'] = $distribution[1];
-                $data['position'] = $distribution[2];
-                $craeted = Distribution::create($data);
+        foreach ($data as $key => $value) {
+            if ($value) {
+                $created = Distribution::create([
+                    'meta_id' => $dm->id,
+                    'py_num' => $value,
+                    'position' => $key + 1
+                ]);
             }
         }
         

@@ -35,7 +35,7 @@ class PoolingsController extends ApiController
 
         $poolings = $request->get('data');
         $created = [];
-            if (!empty($pooling)) {
+            if (!empty($poolings)) {
                 foreach ($poolings as $pooling) {
                 $data = [];
                 $data['meta_id'] = $dm->id;

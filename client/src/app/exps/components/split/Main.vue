@@ -28,20 +28,21 @@
           </tr>
           </thead>
           <tbody>
-            <tr v-for="dilution in splits">
-              <td>{{ dilution.py_num }} </td>
-              <td>{{ dilution.sample_type }} </td>
-              <td>{{ dilution.sample_status }} </td>
-              <td>{{ dilution.pipeline }} </td>
-              <td>{{ dilution.m }} </td>
-              <td>{{ dilution.v }} </td>
-              <td>{{ dilution.left }} </td>
-              <td>{{ dilution.exp_batch }} </td>
-              <td>{{ dilution.project }} </td>
-              <td>{{ dilution.note }} </td>
+            <tr v-for="split in splits">
+              <td>{{ split.py_num }} </td>
+              <td>{{ split.sample_type }} </td>
+              <td>{{ split.sample_status }} </td>
+              <td>{{ split.pipeline }} </td>
+              <td>{{ split.m }} </td>
+              <td>{{ split.v }} </td>
+              <td>{{ split.left }} </td>
+              <td>{{ split.exp_batch }} </td>
+              <td>{{ split.project }} </td>
+              <td>{{ split.note }} </td>
             </tr>
           </tbody>
         </table>
+        <pagination :paginationData="pagination" :currentPage="currentPage" :maxItems="pagination.total"></pagination>
       </div>
     </div>
   </div>
@@ -64,7 +65,12 @@
       }
     },
     mounted () {
+      this.$bus.$on('navigate', ({ page }) => this.navigate(page))
       this.fetch()
+    },
+    beforeRouteLeave (to, from, next) {
+      this.$bus.$off('navigate')
+      next()
     },
     watch: {
       currentPage: 'fetch'
@@ -73,7 +79,7 @@
       ...mapActions(['splitsSetData', 'setFetching', 'setMessage']),
       fetch () {
         this.setFetching({ fetching: true })
-        this.$http.get('splits').then(({ data }) => {
+        this.$http.get(`splits?page=${this.currentPage}`).then(({ data }) => {
           console.log(data)
           this.splitsSetData({
             splits: data.data,
@@ -83,7 +89,7 @@
         })
       },
       navigate (obj) {
-        this.$route.push({
+        this.$router.push({
           name: 'splits.index',
           query: {
             page: obj.page

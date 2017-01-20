@@ -29,7 +29,7 @@ class AnalysesController extends ApiController
 
         $analyses = $request->get('data');
         $created = [];
-        if (!empty($analysis)) {
+        if (!empty($analyses)) {
             foreach ($analyses as $analysis) {
                 $data = [];
                 $data['meta_id'] = $dm->id;

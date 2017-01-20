@@ -10,31 +10,22 @@
 
       <div class="panel-body">
         <table class="table table-bordered">
-          <tr>
-            <td  v-for="n in 12">A{{ n }}</td>
-          </tr>
-          <tr>
-            <td  v-for="n in 12">B{{ n }}</td>
-          </tr>
-          <tr>
-            <td  v-for="n in 12">C{{ n }}</td>
-          </tr>
-          <tr>
-            <td  v-for="n in 12">D{{ n }}</td>
-          </tr>
-          <tr>
-            <td  v-for="n in 12">E{{ n }}</td>
-          </tr>
-          <tr>
-            <td  v-for="n in 12">F{{ n }}</td>
-          </tr>
-          <tr>
-            <td  v-for="n in 12">G{{ n }}</td>
-          </tr>
-          <tr>
-            <td  v-for="n in 12">H{{ n }}</td>
-          </tr>
+          <thead>
+            <tr>
+              <td>板流水号</td>
+              <td>板位</td>
+              <td>谱元编号</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="distribution in distributions">
+              <td>{{ distribution.meta_id }}</td>
+              <td>{{ distribution.position }}</td>
+              <td>{{ distribution.py_num }}</td>
+            </tr>
+          </tbody>
         </table>
+        <pagination :paginationData="pagination" :currentPage="currentPage" :maxItems="pagination.total"></pagination>
       </div>
     </div>
   </div>
@@ -57,7 +48,12 @@
       }
     },
     mounted () {
+      this.$bus.$on('navigate', ({ page }) => this.navigate(page))
       this.fetch()
+    },
+    beforeRouteLeave (to, from, next) {
+      this.$bus.$off('navigate')
+      next()
     },
     watch: {
       currentPage: 'fetch'
@@ -66,7 +62,7 @@
       ...mapActions(['distributionsSetData', 'setFetching', 'setMessage']),
       fetch () {
         this.setFetching({ fetching: true })
-        this.$http.get('distributions').then(({ data }) => {
+        this.$http.get(`distributions?page=${this.currentPage}`).then(({ data }) => {
           console.log(data)
           this.distributionsSetData({
             distributions: data.data,
@@ -75,11 +71,11 @@
           this.setFetching({ fetching: false })
         })
       },
-      navigate (obj) {
-        this.$route.push({
+      navigate (page) {
+        this.$router.push({
           name: 'distributions.index',
           query: {
-            page: obj.page
+            page
           }
         })
       }

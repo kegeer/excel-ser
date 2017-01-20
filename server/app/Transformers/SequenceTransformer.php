@@ -2,12 +2,12 @@
 
 namespace App\Transformers;
 
-use App\Models\Sequencec;
+use App\Models\Sequence;
 use League\Fractal\TransformerAbstract;
 
-class SequencecTransformer extends TransformerAbstract
+class SequenceTransformer extends TransformerAbstract
 {
-	public function transform (Sequencec $sequence)
+	public function transform (Sequence $sequence)
 	{
 		return [
 			'id' => $sequence->id,

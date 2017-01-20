@@ -33,7 +33,7 @@ class SequencesController extends ApiController
 
         $sequences = $request->get('data');
         $created = [];
-            if (!empty($sequence)) {
+            if (!empty($sequences)) {
                 foreach ($sequences as $sequence) {
                 $data = [];
                 $data['meta_id'] = $dm->id;

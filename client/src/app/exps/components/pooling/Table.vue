@@ -44,7 +44,7 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label for="theoretic_c">理论浓度</label>
-                    <input type="date" class="form-control" id="theoretic_c" v-model="form.theoretic_c">
+                    <input type="text" class="form-control" id="theoretic_c" v-model="form.theoretic_c">
                   </div>
                 </div>
               </div>
@@ -72,7 +72,7 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label for="sample_v">取样体积</label>
-                    <input type="date" class="form-control" id="sample_v" v-model="form.sample_v">
+                    <input type="text" class="form-control" id="sample_v" v-model="form.sample_v">
                   </div>
                 </div>
               </div>
@@ -86,7 +86,7 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label for="after_c_c">浓缩后浓度</label>
-                    <input type="date" class="form-control" id="after_c_c" v-model="form.after_c_c">
+                    <input type="text" class="form-control" id="after_c_c" v-model="form.after_c_c">
                   </div>
                 </div>
               </div>

@@ -29,8 +29,8 @@ class SplitsController extends ApiController
 
         $splits = $request->get('data');
         $created = [];
-            if (!empty($split)) {
-                foreach ($splits as $split) {
+        if (!empty($splits)) {
+            foreach ($splits as $split) {
                 $data = [];
                 $data['meta_id'] = $dm->id;
                 $data['py_num'] = $split[1];

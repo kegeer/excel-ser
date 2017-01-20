@@ -47,7 +47,7 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label for="sample_plate_num">样品板编号</label>
-                    <input type="date" class="form-control" id="sample_plate_num" v-model="form.sample_plate_num">
+                    <input type="text" class="form-control" id="sample_plate_num" v-model="form.sample_plate_num">
                   </div>
                 </div>
               </div>
@@ -61,7 +61,7 @@
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label for="pipeline">扩增类型</label>
-                    <input type="date" class="form-control" id="pipeline" v-model="form.pipeline">
+                    <input type="text" class="form-control" id="pipeline" v-model="form.pipeline">
                   </div>
                 </div>
                 <div class="col-sm-4">
@@ -182,10 +182,17 @@ export default {
   methods: {
     ...mapActions(['setMessage']),
     dealData (data) {
-      $('#saveModal').modal('show')
-      this.resetForm()
-      console.log(data)
-      this.form.data = data
+      if (data.length !== 8) {
+        this.setMessage({
+          type: 'warning',
+          message: '请选择正确的96孔板数据共8行数据'
+        })
+      } else {
+        $('#saveModal').modal('show')
+        this.resetForm()
+        console.log(data)
+        this.form.data = data
+      }
     },
     saveTable () {
       console.log(this.form)

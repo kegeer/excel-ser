@@ -49,6 +49,7 @@
             </tr>
           </tbody>
         </table>
+        <pagination :paginationData="pagination" :currentPage="currentPage" :maxItems="pagination.total"></pagination>
       </div>
     </div>
   </div>
@@ -71,7 +72,12 @@
       }
     },
     mounted () {
+      this.$bus.$on('navigate', ({ page }) => this.navigate(page))
       this.fetch()
+    },
+    beforeRouteLeave (to, from, next) {
+      this.$bus.$off('navigate')
+      next()
     },
     watch: {
       currentPage: 'fetch'
@@ -80,7 +86,7 @@
       ...mapActions(['librariesSetData', 'setFetching', 'setMessage']),
       fetch () {
         this.setFetching({ fetching: true })
-        this.$http.get('libraries').then(({ data }) => {
+        this.$http.get(`libraries?page=${this.currentPage}`).then(({ data }) => {
           console.log(data)
           this.librariesSetData({
             libraries: data.data,
@@ -90,7 +96,7 @@
         })
       },
       navigate (obj) {
-        this.$route.push({
+        this.$router.push({
           name: 'libraries.index',
           query: {
             page: obj.page

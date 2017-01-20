@@ -19,9 +19,10 @@ class LibrariesController extends ApiController
 	}
     public function store (Request $request)
     {
-        $libraries = $request->get('data');
+        // dd($request->all());
+        $libraries = $request->all();
         $created = [];
-            if (!empty($library)) {
+            if (!empty($libraries)) {
                 foreach ($libraries as $library) {
                 $data = [];
                 $data['name'] = $library[1];
