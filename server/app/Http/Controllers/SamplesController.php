@@ -20,7 +20,7 @@ class SamplesController extends ApiController
     public function store (Request $request)
     {
     	// dd($request->all());
-        $samples = $request->all();
+        $samples = $request->excep('_url');
         $created = [];
         foreach ($samples as $sample) {
         	$data = [];
