@@ -13,7 +13,7 @@ class DistributionsController extends ApiController
 	{
 		$sort = $this->parameters->sort();
         $order = $this->parameters->order();
-        $limit = $this->parameters->limit();
+        $limit = $this->parameters->limit(96);
 
         $distributions = Distribution::orderBy($sort, $order)->paginate($limit);
 		return $this->response->collection($distributions);
@@ -51,7 +51,7 @@ class DistributionsController extends ApiController
                 ]);
             }
         }
-        
+
         return $this->response->json($created);
     }
 }

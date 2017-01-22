@@ -2,18 +2,19 @@ input[type=checkbox] {
   visibility: hidden;
 }
 .checkbox {
-  width: 25px;
-  margin: 5px 20px 25px !important;
+  width: 16px;
+  margin: 0px 10px 16px !important;
   position: relative;
   label {
     cursor: pointer;
     position: absolute;
-    width: 25px;
-    height: 25px;
+    width: 16px;
+    height: 16px;
     top: 0;
     left: 0;
-    background: #eee;
+    // background: #eee;
     border:1px solid #ddd;
+    // border-radius: 100%;
     &:after {
       opacity: 0.1;
       content: '';

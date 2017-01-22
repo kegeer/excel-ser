@@ -9,7 +9,7 @@
       </div>
 
       <div class="panel-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
           <thead>
             <tr>
               <td>板流水号</td>
@@ -20,11 +20,17 @@
           <tbody>
             <tr v-for="distribution in distributions">
               <td>{{ distribution.meta_id }}</td>
-              <td>{{ distribution.position }}</td>
+              <td>{{ plateNum(distribution.position) }}</td>
               <td>{{ distribution.py_num }}</td>
             </tr>
           </tbody>
         </table>
+
+        <!-- <table class="table">
+          <tr v-for="distribution in distributions">
+            <td v-for="n in 96" v-if="distribution.position === n">{{ distribution.py_num }}</td>
+          </tr>
+        </table> -->
         <pagination :paginationData="pagination" :currentPage="currentPage" :maxItems="pagination.total"></pagination>
       </div>
     </div>
@@ -32,6 +38,7 @@
 </template>
 
 <script>
+  import * as plate from '../../../../utils/plate'
   import { mapState, mapActions } from 'vuex'
   export default {
     computed: {
@@ -50,6 +57,7 @@
     mounted () {
       this.$bus.$on('navigate', ({ page }) => this.navigate(page))
       this.fetch()
+      console.log(plate.plate['1'])
     },
     beforeRouteLeave (to, from, next) {
       this.$bus.$off('navigate')
@@ -59,6 +67,9 @@
       currentPage: 'fetch'
     },
     methods: {
+      plateNum(num) {
+        return plate.plate[num]
+      },
       ...mapActions(['distributionsSetData', 'setFetching', 'setMessage']),
       fetch () {
         this.setFetching({ fetching: true })

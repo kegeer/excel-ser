@@ -7,14 +7,22 @@
         </h4>
       </div>
       <div class="panel-body">
-        <table class="table">
+        <table class="table table-bordered table-striped">
           <thead>
           <tr>
             <th>原始编号</th>
             <th>谱元编号</th>
             <th>样品类型</th>
+            <th>样品量</th>
             <th>送样人</th>
             <th>送样人/寄件人联系方式</th>
+            <th>寄送时间</th>
+            <th>收样状态</th>
+            <th>样品状态</th>
+            <th>快递单号</th>
+            <th>收样时间</th>
+            <th>收样人</th>
+            <th>存储位置</th>
             <th>样品批次</th>
             <th>样品所属项目编号</th>
             <th>技术路线</th>
@@ -26,8 +34,16 @@
             <td>{{ sample.ori_num }}</td>
             <td>{{ sample.py_num }}</td>
             <td>{{ sample.sample_type }}</td>
+            <td>{{ sample.sample_amount }}</td>
             <td>{{ sample.sender }}</td>
             <td>{{ sample.sender_contact }}</td>
+            <td>{{ sample.send_time }}</td>
+            <td>{{ sample.receive_status }}</td>
+            <td>{{ sample.sample_status }}</td>
+            <td>{{ sample.express_num }}</td>
+            <td>{{ sample.receive_time }}</td>
+            <td>{{ sample.recipient }}</td>
+            <td>{{ sample.store_location }}</td>
             <td>{{ sample.sample_batch }}</td>
             <td>{{ sample.project }}</td>
             <td>{{ sample.pipeline }}</td>
@@ -81,11 +97,11 @@
           this.setFetching({ fetching: false })
         })
       },
-      navigate (obj) {
+      navigate (page) {
         this.$router.push({
           name: 'samples.index',
           query: {
-            page: obj.page
+            page: page
           }
         })
       }

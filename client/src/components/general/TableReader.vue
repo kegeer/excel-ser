@@ -61,6 +61,7 @@
   import {
     readFile
   } from '../../services/reader'
+  import { mapActions } from 'vuex'
   import $ from 'jquery'
   export default {
     data () {
@@ -82,7 +83,13 @@
       // showColumn (row) {
       //   this.$bus.$emit('showNumColumn', row)
       // },
+      ...mapActions(['resetMessages']),
       fileLoad (e) {
+        this.resetMessages()
+        this.sheets = []
+        this.sheetData = {}
+        this.selectedRow = []
+        this.data = []
         this.excelFile = e.target.files[0]
       },
       previewTable () {
@@ -110,7 +117,6 @@
       sendTable () {
         this.resetData()
         this.selectedRow.sort(this.sortNum)
-        console.log(this.selectedRow)
         this.selectedRow.forEach(index => this.data.push(this.sheetData.data[index]))
         this.$bus.$emit('sendTableData', this.data)
       },

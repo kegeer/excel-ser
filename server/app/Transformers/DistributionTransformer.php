@@ -11,7 +11,7 @@ class DistributionTransformer extends TransformerAbstract
 	{
 		return [
 			'id' => $distribution->id,
-			'meta_id' => $distribution->meta_id,
+			'meta_id' => $distribution->meta->serial_num,
 			'py_num' => $distribution->py_num,
 			'position' => $distribution->position
 		];

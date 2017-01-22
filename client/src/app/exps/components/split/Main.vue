@@ -9,7 +9,7 @@
       </div>
 
       <div class="panel-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
           <thead>
           <tr>
             <th rowspan="2">谱元编号</th>

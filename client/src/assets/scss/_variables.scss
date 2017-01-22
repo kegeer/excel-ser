@@ -24,6 +24,12 @@ $font-size-base: 14px;
 $line-height-base: 1.6;
 $text-color: #636b6f;
 
+@media (min-width: 1200px) {
+  .container {
+      width: 80% !important;
+  }
+}
+
 // Navbar
 $navbar-default-bg: #fff;
 
