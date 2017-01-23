@@ -29,7 +29,7 @@
           </tr>
           </thead>
           <tbody>
-            <tr v-for="sample in form.samples">
+            <tr v-for="sample in form">
               <td>
                 <input type="text" class="table-control" v-model="sample.ori_num">
               </td>
@@ -102,42 +102,38 @@ import { pick } from 'lodash'
 export default {
   data () {
     return {
-      form: {
-        samples: [
-          {
-            id: 0,
-            ori_num: '',
-            py_num: '',
-            sample_type: '',
-            sample_amount: '',
-            sender: '',
-            sender_contact: '',
-            send_time: '',
-            receive_status: '',
-            sample_status: '',
-            express_num: '',
-            receive_time: '',
-            recipient: '',
-            store_location: '',
-            sample_batch: '',
-            project: '',
-            pipeline: '',
-            note: ''
-          }
-        ]
-      }
+      form: [
+        {
+          id: 0,
+          ori_num: '',
+          py_num: '',
+          sample_type: '',
+          sample_amount: '',
+          sender: '',
+          sender_contact: '',
+          send_time: '',
+          receive_status: '',
+          sample_status: '',
+          express_num: '',
+          receive_time: '',
+          recipient: '',
+          store_location: '',
+          sample_batch: '',
+          project: '',
+          pipeline: '',
+          note: ''
+        }
+      ]
     }
-  },
-  watch: {
-    $route: 'fetch',
-    $route: 'reset'
   },
   mounted () {
     this.fetch()
   },
+  watch: {
+    $route: 'fetch'
+  },
   computed: {
     isEditing () {
-      // return (this.form[0] && this.form[0].id) > 0
       return this.$route.params.id
     },
     isValid () {
@@ -145,26 +141,26 @@ export default {
     },
     formTitle () {
       return this.$route.params.id ? '修改样品信息': '新增样品'
-      // return (this.form[0] && this.form[0].id > 0) ? '修改样品信息': '新增样品'
     }
   },
   methods: {
     ...mapActions(['setFetching', 'resetMessages', 'setMessage']),
     fetch () {
-      const id = this.$route.params.id
+      let id = this.$route.params.id
       if (id !== undefined) {
         this.setFetching({ fetching: true })
+        // this.reset()
+        console.log(id)
         this.$http.get(`samples/${id}`)
         .then(({ data }) => {
-          console.log(data.data)
-          let sample = data.data
-          this.form.samples[0] = {...sample}
+          this.form[0] = {...data.data}
+          console.log(this.form)
           this.setFetching({ fetching: false })
         })
       }
     },
     addLine () {
-      this.form.samples.push({
+      this.form.push({
         id: 0,
         ori_num: '',
         py_num: '',
@@ -186,8 +182,8 @@ export default {
       })
     },
     removeLine (sample) {
-      let index = this.form.samples.indexOf(sample)
-      this.form.samples.splice(index, 1)
+      let index = this.form.indexOf(sample)
+      this.form.splice(index, 1)
     },
     submit () {
       if (this.isValid) {
@@ -200,25 +196,25 @@ export default {
       }
     },
     update () {
-      this.$http.put(`samples/${this.form.samples[0].id}`, this.form.samples[0])
+      this.$http.put(`samples/${this.form[0].id}`, this.form[0])
         .then(() => {
-          this.$bus.$emit('form.updated')
+          this.$bus.$emit('sample.updated')
           this.setFetching({ fetching: false })
           this.setMessage({ type:'success', message: '项目信息更新成功' })
           this.reset()
         })
     },
     save () {
-      this.$http.post('projects/simple', this.form.samples)
+      this.$http.post('samples/simple', this.form)
         .then(() => {
-          this.$bus.$emit('projects.created')
+          this.$bus.$emit('sample.created')
           this.setFetching({ fetching: false })
           this.setMessage({ type: 'success', message: '新项目录入成功'})
           this.reset()
         })
     },
     reset () {
-      this.form.samples = [
+      this.form = [
         {
           id: 0,
           ori_num: '',

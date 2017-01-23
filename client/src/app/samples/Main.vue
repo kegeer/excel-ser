@@ -53,8 +53,8 @@
             <td>{{ sample.pipeline }}</td>
             <td>{{ sample.note }}</td>
             <td>
-              <a href="#" @click.prevent="edit(sample)" class="text-primary"><i class="fa fa-edit"></i></a>
-              <a href="#" @click.prevent="askRemove(sample)" class="text-danger"><i class="fa fa-remove"></i></a>
+              <a href="#" @click="edit(sample)" class="text-primary"><i class="fa fa-edit"></i></a>
+              <a href="#" @click="askRemove(sample)" class="text-danger"><i class="fa fa-remove"></i></a>
             </td>
           </tr>
           </tbody>
@@ -91,6 +91,8 @@
     },
     watch: {
       currentPage: 'fetch'
+      // $route: 'addNew',
+      // $route: 'edit'
     },
     methods: {
       ...mapActions(['samplesSetData', 'setFetching', 'setMessage']),
