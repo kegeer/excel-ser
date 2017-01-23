@@ -7,6 +7,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::group(['middleware' => ['api']], function () {
+	Route::post('samples/simple', 'SamplesController@simple');
 	Route::resource('samples', 'SamplesController');
 	Route::resource('dilutions', 'Experiments\DilutionsController');
 	Route::resource('splits', 'Experiments\SplitsController');

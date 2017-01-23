@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sample;
+use App\Transformers\SampleTransformer;
 
 class SamplesController extends ApiController
 {
@@ -14,7 +15,7 @@ class SamplesController extends ApiController
         $limit = $this->parameters->limit();
 
         $samples = Sample::orderBy($sort, $order)->paginate($limit);
-		return $this->response->collection($samples);
+		return $this->response->collection($samples, new SampleTransformer);
 		// return 'haha';
 	}
     public function store (Request $request)
@@ -44,5 +45,75 @@ class SamplesController extends ApiController
             $created = Sample::create($data);
         }
         return $this->response->json($created);
+    }
+    public function show ($id)
+    {
+        $sample = $this->findOrNot($id);
+        return $this->response->item($sample, new SampleTransformer);
+    }
+    public function simple (Request $request)
+    {
+        $res = [];
+        $samples = $request->all();
+        foreach ($samples as $sample) {
+            $res = Sample::create([
+                'ori_num' => $sample['ori_num'],
+                'py_num' => $sample['py_num'],
+                'sample_type' => $sample['sample_type'],
+                'sample_amount' => $sample['sample_amount'],
+                'sender' => $sample['sender'],
+                'sender_contact' => $sample['sender_contact'],
+                'send_time' => $sample['send_time'],
+                'receive_status' => $sample['receive_status'],
+                'sample_status' => $sample['sample_status'],
+                'express_num' => $sample['express_num'],
+                'receive_time' => $sample['receive_time'],
+                'recipient' => $sample['recipient'],
+                'store_location' => $sample['store_location'],
+                'sample_batch' => $sample['sample_batch'],
+                'project' => $sample['project'],
+                'pipeline' => $sample['pipeline'],
+                'note' => $sample['note']
+            ]);
+        }
+        return $this->response->withCreated($res, new SampleTransformer);
+    }
+    public function update (request $request, $id)
+    {
+        $sample = $this->findOrNot($id);
+        $sample->fill([
+            'ori_num' => $request->get('ori_num'),
+            'py_num' => $request->get('py_num'),
+            'sample_type' => $request->get('sample_type'),
+            'sample_amount' => $request->get('sample_amount'),
+            'sender' => $request->get('sender'),
+            'sender_contact' => $request->get('sender_contact'),
+            'send_time' => $request->get('send_time'),
+            'receive_status' => $request->get('receive_status'),
+            'sample_status' => $request->get('sample_status'),
+            'express_num' => $request->get('express_num'),
+            'receive_time' => $request->get('receive_time'),
+            'recipient' => $request->get('recipient'),
+            'store_location' => $request->get('store_location'),
+            'sample_batch' => $request->get('sample_batch'),
+            'project' => $request->get('project'),
+            'pipeline' => $request->get('pipeline'),
+            'note' => $request->get('note')
+        ])->save();
+        return $this->response->item($sample, new SampleTransformer);
+    }
+    public function destroy ($id)
+    {
+        $sample = $this->findOrNot($id);
+        $sample->delete();
+        return $this->response->withNoContent();
+    }
+    protected function findOrNot($id)
+    {
+        $sample = Sample::find($id);
+        if (!$sample) {
+            return $this->response->withNotFound('Sample not found');
+        }
+        return $sample;
     }
 }

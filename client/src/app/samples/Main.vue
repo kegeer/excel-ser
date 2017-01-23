@@ -1,10 +1,13 @@
 <template>
   <div>
+    <router-view></router-view>
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h4>样品列表
-          <router-link :to="{ name: 'sample.import' }" tag="a" class="btn btn-primary pull-right">批量导入</router-link>
-        </h4>
+        <h4>样品列表</h4>
+        <div class="btn btn-group pull-right">
+          <a href="#" @click="addNew" class="btn btn-default">手动录入</a>
+          <a href="#" @click="addBatch" class="btn btn-default">批量导入</a>
+        </div>
       </div>
       <div class="panel-body">
         <table class="table table-bordered table-striped">
@@ -27,6 +30,7 @@
             <th>样品所属项目编号</th>
             <th>技术路线</th>
             <th>备注(意外情况)</th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
@@ -48,6 +52,10 @@
             <td>{{ sample.project }}</td>
             <td>{{ sample.pipeline }}</td>
             <td>{{ sample.note }}</td>
+            <td>
+              <a href="#" @click.prevent="edit(sample)" class="text-primary"><i class="fa fa-edit"></i></a>
+              <a href="#" @click.prevent="askRemove(sample)" class="text-danger"><i class="fa fa-remove"></i></a>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -86,6 +94,48 @@
     },
     methods: {
       ...mapActions(['samplesSetData', 'setFetching', 'setMessage']),
+      addNew () {
+        this.$router.push({
+          name: 'sample.new',
+          params: {
+            page: this.currentPage
+          }
+        })
+      },
+      addBatch () {
+        this.$router.push({
+          name: 'sample.import',
+          params: {
+            page: this.currentPage
+          }
+        })
+      },
+      edit (sample) {
+        let id = sample.id
+        this.$router.push({
+          name: 'sample.edit',
+          params: {
+            id
+          }
+        })
+      },
+      askRemove (sample) {
+        swal({
+          title: '你确定吗',
+          text: '样品{$sample.py_num}将会被删除',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#dd6b55',
+          confirmButtonText: '确定',
+          closeOnConfirm: false
+        }, () => this.remove(sample))
+      },
+      remove (sample) {
+        this.$http.delete(`samples/${sample.id}`)
+        .then(() => {
+          swal('完成', '样品删除成功', 'success')
+        })
+      },
       fetch () {
         this.setFetching({ fetching: true })
         this.$http.get(`samples?page=${this.currentPage}`).then(({ data }) => {
